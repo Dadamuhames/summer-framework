@@ -9,20 +9,20 @@ import lombok.SneakyThrows;
 public class BeanFactory {
 
   private final ApplicationContext context;
-  private List<BeanProcessor> beanProcessors = new ArrayList<>();
-  private List<BeanProxyProcessor> proxyProcessors = new ArrayList<>();
+  private final List<BeanProcessor> beanProcessors = new ArrayList<>();
+  private final List<BeanProxyProcessor> proxyProcessors = new ArrayList<>();
 
   @SneakyThrows
   public BeanFactory(ApplicationContext context) {
     this.context = context;
 
     for (Class<? extends BeanProcessor> bP :
-        context.getConfig().getScanner().getSubTypesOf(BeanProcessor.class)) {
+        context.getConfig().getInternalScanner().getSubTypesOf(BeanProcessor.class)) {
       beanProcessors.add(bP.getDeclaredConstructor().newInstance());
     }
 
     for (Class<? extends BeanProxyProcessor> bPP :
-        context.getConfig().getScanner().getSubTypesOf(BeanProxyProcessor.class)) {
+        context.getConfig().getInternalScanner().getSubTypesOf(BeanProxyProcessor.class)) {
       proxyProcessors.add(bPP.getDeclaredConstructor().newInstance());
     }
   }

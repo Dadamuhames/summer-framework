@@ -8,11 +8,13 @@ import org.reflections.Reflections;
 
 public class ApplicationConfig implements Config {
 
-  @Getter private final Reflections scanner;
+  @Getter private final Reflections internalScanner;
+  @Getter private final Reflections externalScanner;
   private final Map<Class, Class> ifc2ImplClass;
 
   public ApplicationConfig(String packageToScan) {
-    this.scanner = new Reflections(packageToScan);
+    this.internalScanner = new Reflections("com.msd.summer");
+    this.externalScanner = new Reflections(packageToScan);
     this.ifc2ImplClass = new HashMap<>();
   }
 
@@ -21,7 +23,7 @@ public class ApplicationConfig implements Config {
     return ifc2ImplClass.computeIfAbsent(
         ifc,
         aClass -> {
-          Set<Class<? extends T>> classes = scanner.getSubTypesOf(ifc);
+          Set<Class<? extends T>> classes = externalScanner.getSubTypesOf(ifc);
 
           // TODO: load all impls
 

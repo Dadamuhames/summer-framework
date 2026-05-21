@@ -15,7 +15,7 @@ public class ComponentScanner {
   }
 
   public void loadComponents() throws Exception {
-    var scanner = context.getConfig().getScanner();
+    var scanner = context.getConfig().getExternalScanner();
 
     scanComponents(scanner);
     scanConfigs(scanner);
