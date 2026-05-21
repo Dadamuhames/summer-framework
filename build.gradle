@@ -1,0 +1,53 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'com.msd.summer'
+version = '1.0-SNAPSHOT'
+
+
+publishing {
+    publications {
+        gpr(MavenPublication) {
+            from components.java
+
+            artifactId = 'summer-framework'
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+
+            url = uri("https://maven.pkg.github.com/Dadamuhames/summer-framework")
+
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.reflections:reflections:0.10.2"
+
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:10.1.18'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
